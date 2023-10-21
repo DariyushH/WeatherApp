@@ -11,7 +11,7 @@ public class WeatherApi {
 
     public String getWeather(){
         RestTemplate restTemplate = new RestTemplate();
-        String url = " http://api.weatherapi.com/v1/current.json?key="+apiKey+"&q=Grodno";
+        String url = " http://api.weatherapi.com/v1/current.json?key="+apiKey+"&q=Grodno&aqi=no";
         return restTemplate.getForObject(url, String.class);
     }
 
