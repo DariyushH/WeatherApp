@@ -7,10 +7,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class WeatherPrint {
     @Autowired
-    private WeatherApi weatherApi; //TODO Autowired вынести в конструктор
+    private final WeatherApi weatherApi;
+
+    public WeatherPrint(WeatherApi weatherApi) {
+        this.weatherApi = weatherApi;
+    }
 
     @Scheduled(fixedRate = 10000)
-    public void printWetherConsole(){ //TODO название метода поменяй, неправильно Weather написал
+    public void printWeatherConsole(){
         String weather = weatherApi.getWeather();
         System.out.printf(weather);
     }

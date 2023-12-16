@@ -1,19 +1,34 @@
 package com.example.weatherapp;
 
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Component
 public class WeatherApi {
     @Value("${weather.api.key}")
     private String apiKey;
-
-    public String getWeather(){
-        RestTemplate restTemplate = new RestTemplate(); //TODO вынести как Bean в конфиг класс и вынести как переменную класса, а не метода
-        String url = " http://api.weatherapi.com/v1/current.json?key="+apiKey+"&q=Grodno&aqi=no"; //TODO Переделать в URI, подсказка - URIComponentsBuilder
-        return restTemplate.getForObject(url, String.class);
+    private final RestTemplate restTemplate ;
+    @Autowired
+    public WeatherApi(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
+    public String getWeather(){
+        UriComponents uri = UriComponentsBuilder.newInstance()
+                .scheme("http")
+                .host("www.api.weatherapi.com")
+                .path("/v1/")
+                .query("current.json?key={apiKey}&q=Grodno&aqi=no")
+                .buildAndExpand(apiKey);
+        assertEquals("http://api.weatherapi.com/v1/current.json?key=\"+apiKey+\"&q=Grodno&aqi=no", uri.toUriString());
+        return restTemplate.getForObject(uri.toUriString(), String.class); //TODO Сделать получение в Java Class
+    }
 
 }
