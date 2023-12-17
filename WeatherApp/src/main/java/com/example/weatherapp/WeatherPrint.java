@@ -15,7 +15,7 @@ public class WeatherPrint {
 
     @Scheduled(fixedRate = 10000)
     public void printWeatherConsole(){
-        String weather = weatherApi.getWeather();
-        System.out.printf(weather);
+        WeatherReport weatherReport = weatherApi.getWeather("London");
+        System.out.printf(weatherReport.toString());
     }
 }

@@ -20,16 +20,16 @@ public class WeatherApi {
         this.restTemplate = restTemplate;
     }
 
-    public String getWeather(){
+    public WeatherReport getWeather(String location){
         UriComponents uri = UriComponentsBuilder.newInstance()
                 .scheme("http")
-                .host("www.api.weatherapi.com")
+                .host("api.weatherapi.com")
                 .path("/v1/current.json")
                 .queryParam("key", apiKey)
-                .queryParam("q", "Grodno")
+                .queryParam("q", location)
                 .queryParam("aqi", "no")
                 .build();
-        return restTemplate.getForObject(uri.toUriString(), String.class); //TODO Сделать получение в Java Class
+        return restTemplate.getForObject(uri.toUriString(), WeatherReport.class);
     }
 
 }
